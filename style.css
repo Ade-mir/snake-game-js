@@ -35,7 +35,7 @@ body,
 .game-border-3 {
   border: #8b966c solid 30px;
   border-radius: 20px;
-  box-shadow: inset 0 0 0 5px #5b6448;
+  box-shadow: inset 0 0 0 5px #8b966c;
 }
 
 #instruction-text {
@@ -76,7 +76,6 @@ body,
 }
 
 .snake {
-  background-color: #414141;
   border: #5a5a5a 1px dotted;
 }
 
