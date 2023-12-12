@@ -14,6 +14,7 @@ let direction = 'right';
 let gameInterval;
 let gameSpeedDelay = 200;
 let gameStarted = false;
+let directionQueue = [];
 
 // Draw game map, snake, food
 function draw() {
@@ -45,9 +46,6 @@ function setPosition(element, position) {
   element.style.gridRow = position.y;
 }
 
-// Testing draw function
-// draw();
-
 // Draw food function
 function drawFood() {
   if (gameStarted) {
@@ -66,6 +64,9 @@ function generateFood() {
 
 // Moving the snake
 function move() {
+  if (directionQueue.length > 0) {
+    direction = directionQueue.shift();
+  }
   const head = { ...snake[0] };
   switch (direction) {
     case 'up':
@@ -100,12 +101,6 @@ function move() {
   }
 }
 
-// Test moving
-// setInterval(() => {
-//   move(); // Move first
-//   draw(); // Then draw again new position
-// }, 200);
-
 // Start game function
 function startGame() {
   gameStarted = true; // Keep track of a running game
@@ -120,25 +115,37 @@ function startGame() {
 
 // Keypress event listener
 function handleKeyPress(event) {
-  if (
-    (!gameStarted && event.code === 'Space') ||
-    (!gameStarted && event.key === ' ')
-  ) {
+  if ((!gameStarted && event.code === 'Space') || (!gameStarted && event.key === ' ')) {
     startGame();
   } else {
+    let newDirection;
     switch (event.key) {
+      case 'w':
       case 'ArrowUp':
-        direction = 'up';
+        newDirection = 'up';
         break;
+      case 's':
       case 'ArrowDown':
-        direction = 'down';
+        newDirection = 'down';
         break;
+      case 'a':
       case 'ArrowLeft':
-        direction = 'left';
+        newDirection = 'left';
         break;
+      case 'd':
       case 'ArrowRight':
-        direction = 'right';
+        newDirection = 'right';
         break;
+    }
+
+    const isOpposite =
+      (direction === 'up' && newDirection === 'down') ||
+      (direction === 'down' && newDirection === 'up') ||
+      (direction === 'left' && newDirection === 'right') ||
+      (direction === 'right' && newDirection === 'left');
+
+    if (!isOpposite) {
+      directionQueue.push(newDirection);
     }
   }
 }
