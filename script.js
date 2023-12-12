@@ -59,8 +59,19 @@ function drawFood() {
 
 // Generate food
 function generateFood() {
-  const x = Math.floor(Math.random() * gridSize) + 1;
-  const y = Math.floor(Math.random() * gridSize) + 1;
+  let x, y;
+  // Infinite loop that continues until food is generated
+  while (true) {
+    // Generate a random position on the X-axis
+    x = Math.floor(Math.random() * gridSize) + 1;
+    // Generate a random position on the Y-axis
+    y = Math.floor(Math.random() * gridSize) + 1;
+    // Check that the generated position does not coincide with the position of the snake
+    if (!snake.some((segment) => segment.x === x && segment.y === y)) {
+      break;
+    }
+  }
+  // Return an object with food coordinates
   return { x, y };
 }
 
