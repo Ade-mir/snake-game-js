@@ -14,6 +14,7 @@ let direction = 'right';
 let gameInterval;
 let gameSpeedDelay = 200;
 let gameStarted = false;
+let nextDirection = direction;
 
 // Draw game map, snake, food
 function draw() {
@@ -66,6 +67,8 @@ function generateFood() {
 
 // Moving the snake
 function move() {
+  direction = nextDirection;
+
   const head = { ...snake[0] };
   switch (direction) {
     case 'up':
@@ -120,24 +123,22 @@ function startGame() {
 
 // Keypress event listener
 function handleKeyPress(event) {
-  if (
-    (!gameStarted && event.code === 'Space') ||
-    (!gameStarted && event.key === ' ')
-  ) {
+  if ((!gameStarted && (event.code === 'Space' || event.key === ' '))) {
     startGame();
-  } else {
+  } else if (gameStarted) {
+    // Set the next direction based on the key pressed
     switch (event.key) {
       case 'ArrowUp':
-        direction = 'up';
+        if (direction !== 'down') nextDirection = 'up';
         break;
       case 'ArrowDown':
-        direction = 'down';
+        if (direction !== 'up') nextDirection = 'down';
         break;
       case 'ArrowLeft':
-        direction = 'left';
+        if (direction !== 'right') nextDirection = 'left';
         break;
       case 'ArrowRight':
-        direction = 'right';
+        if (direction !== 'left') nextDirection = 'right';
         break;
     }
   }
